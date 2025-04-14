@@ -55,7 +55,37 @@ class GameScene: SKScene {
 		lastUpdateTime = currentTime
 		print("\(deltaTime*1000) milliseconds since last udpdate")
 		
-		moveSprite(sprite: zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
+//		moveSprite(sprite: zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
+		
+		if let lastTouchLocation = lastTouchLocation {
+			let diff = lastTouchLocation - zombie.position
+			if (diff.length() <= zombieMovePointsPerSec * CGFloat(deltaTime)) {
+				zombie.position = lastTouchLocation
+				velocity = CGPointZero
+			} else {
+				moveSprite(sprite: zombie, velocity: velocity)
+			}
+		}
 	}
 	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		guard let touch = touches.first else {
+			return
+		}
+		
+		let touchLocation = touch.location(in: self)
+		lastTouchLocation = touchLocation
+		moveZombieToward(location: touchLocation)
+		
+	}
+	
+	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+		guard let touch = touches.first else {
+			return
+		}
+		
+		let touchLocation = touch.location(in: self)
+		lastTouchLocation = touchLocation
+		moveZombieToward(location: touchLocation)
+	}
 }
