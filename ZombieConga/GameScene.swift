@@ -22,12 +22,15 @@ class GameScene: SKScene {
 		let background = SKSpriteNode(imageNamed: "background1")
 		background.position = (CGPoint(x: size.width/2, y: size.height/2)) // to center it in the middle
 		background.anchorPoint = CGPoint(x: 0.5, y: 0.5) // default
-		background.zPosition = -1 // move the background to the back
+		background.zPosition = -1 // make sure to move the background to the back
 		addChild(background) // add sprite to scene
 		
 		zombie.position = CGPoint(x: 400, y: 400)
-		zombie.setScale(0.4) // reduce the size)
+		zombie.setScale(0.4) // reduce the size using SKNode method
 		addChild(zombie)
+		
+		let mySize = background.size
+		print("Size: ", mySize)
 	}
 	
 	func moveZombieToward(location: CGPoint) {
