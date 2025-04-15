@@ -35,7 +35,7 @@ class GameScene: SKScene {
 	
 	func moveZombieToward(location: CGPoint) {
 		let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y) // different length between zombie position vs tap position
-		let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
+		let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y)) // calculating offset vector length using Pythagorean theorem
 		let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
 		
 		velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
