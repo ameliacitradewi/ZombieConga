@@ -46,6 +46,8 @@ class GameScene: SKScene {
 		
 		let mySize = background.size
 		print("Size: ", mySize)
+		
+		debugDrawPlayableArea()
 	}
 	
 	func moveZombieToward(location: CGPoint) {
@@ -75,7 +77,8 @@ class GameScene: SKScene {
 		print("\(deltaTime*1000) milliseconds since last udpdate")
 		
 		moveSprite(sprite: zombie, velocity: velocity)
-		boundsCheckZombie()
+		boundsCheckZombie() // check if zombie in edge position
+		rotate(sprite: zombie, direction: velocity) // rotate zombie to moving direction
 		
 		//		moveSprite(sprite: zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
 		
@@ -92,6 +95,20 @@ class GameScene: SKScene {
 	
 	func sceneTouched(touchLocation: CGPoint) {
 		moveZombieToward(location: touchLocation)
+	}
+	
+	func debugDrawPlayableArea() {
+		let shape = SKShapeNode()
+		let path = CGMutablePath()
+		path.addRect(playableRect)
+		shape.path = path
+		shape.strokeColor = SKColor.red
+		shape.lineWidth = 4.0
+		addChild(shape)
+	}
+	
+	func rotate(sprite: SKSpriteNode, direction: CGPoint) {
+		sprite.zRotation = atan2(direction.y, direction.x)
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -116,8 +133,8 @@ class GameScene: SKScene {
 	}
 	
 	func boundsCheckZombie() {
-		let bottomLeft = CGPoint.zero
-		let topRight = CGPoint(x: size.width, y: size.height)
+		let bottomLeft = CGPoint(x: 0, y: playableRect.minY)
+		let topRight = CGPoint(x: size.width, y: playableRect.maxY)
 		if zombie.position.x <= bottomLeft.x {
 			zombie.position.x = bottomLeft.x
 			velocity.x = -velocity.x
