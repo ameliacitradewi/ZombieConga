@@ -107,8 +107,9 @@ class GameScene: SKScene {
 		addChild(shape)
 	}
 	
+	// rotate zombie following the movement using trigonometry
 	func rotate(sprite: SKSpriteNode, direction: CGPoint) {
-		sprite.zRotation = atan2(direction.y, direction.x)
+		sprite.zRotation = atan2(direction.y, direction.x) // trigonometry
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
