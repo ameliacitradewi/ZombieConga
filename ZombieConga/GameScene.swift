@@ -18,6 +18,21 @@ class GameScene: SKScene {
 	
 	var lastTouchLocation: CGPoint?
 	
+	let playableRect: CGRect
+	
+	override init(size: CGSize) {
+		let maxAspectRatio:CGFloat = 16.0/9.0 // 1
+		let playableHeight = size.width / maxAspectRatio // 2
+		let playableMargin = (size.height-playableHeight)/2.0 // 3
+		playableRect = CGRect(x: 0, y: playableMargin,
+							  width: size.width,
+							  height: playableHeight) // 4
+		super.init(size: size) // 5
+	}
+	required init(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented") // 6
+	}
+	
 	override func didMove(to view: SKView) {
 		let background = SKSpriteNode(imageNamed: "background1")
 		background.position = (CGPoint(x: size.width/2, y: size.height/2)) // to center it in the middle
@@ -59,18 +74,20 @@ class GameScene: SKScene {
 		lastUpdateTime = currentTime
 		print("\(deltaTime*1000) milliseconds since last udpdate")
 		
+		moveSprite(sprite: zombie, velocity: velocity)
+		boundsCheckZombie()
+		
 		//		moveSprite(sprite: zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
 		
-		if let lastTouchLocation = lastTouchLocation {
-			let diff = lastTouchLocation - zombie.position
-			if (diff.length() <= zombieMovePointsPerSec * CGFloat(deltaTime)) {
-				zombie.position = lastTouchLocation
-				velocity = CGPointZero
-			} else {
-				moveSprite(sprite: zombie, velocity: velocity)
-			}
-		}
-		boundsCheckZombie()
+		//		if let lastTouchLocation = lastTouchLocation {
+		//			let diff = lastTouchLocation - zombie.position
+		//			if (diff.length() <= zombieMovePointsPerSec * CGFloat(deltaTime)) {
+		//				zombie.position = lastTouchLocation
+		//				velocity = CGPointZero
+		//			} else {
+		//				moveSprite(sprite: zombie, velocity: velocity)
+		//			}
+		//		}
 	}
 	
 	func sceneTouched(touchLocation: CGPoint) {
