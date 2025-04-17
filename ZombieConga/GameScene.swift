@@ -41,7 +41,7 @@ class GameScene: SKScene {
 		addChild(background) // add sprite to scene
 		
 		zombie.position = CGPoint(x: 400, y: 400)
-		zombie.setScale(0.4) // reduce the size using SKNode method
+//		zombie.setScale(0.4) // reduce the size using SKNode method
 		addChild(zombie)
 		
 		let mySize = background.size
@@ -59,12 +59,18 @@ class GameScene: SKScene {
 		velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
 	}
 	
+//	func moveSprite(sprite: SKSpriteNode, velocity: CGPoint) {
+//		let amountToMove = CGPoint(x: velocity.x * CGFloat(deltaTime), y: velocity.y * CGFloat(deltaTime))
+//		print("Amount to move:", amountToMove)
+//		
+//		sprite.position = CGPoint(x: sprite.position.x + amountToMove.x,
+//								  y: sprite.position.y + amountToMove.y)
+//	}
+	// simplify to:
 	func moveSprite(sprite: SKSpriteNode, velocity: CGPoint) {
-		let amountToMove = CGPoint(x: velocity.x * CGFloat(deltaTime), y: velocity.y * CGFloat(deltaTime))
-		print("Amount to move:", amountToMove)
-		
-		sprite.position = CGPoint(x: sprite.position.x + amountToMove.x,
-								  y: sprite.position.y + amountToMove.y)
+		let amountToMove = velocity * CGFloat(deltaTime)
+		print("Amount to move: \(amountToMove)")
+		sprite.position += amountToMove
 	}
 	
 	override func update(_ currentTime: TimeInterval) {

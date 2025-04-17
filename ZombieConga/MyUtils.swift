@@ -47,6 +47,15 @@ func /= (point: inout CGPoint, scalar: CGFloat) {
 	point = point / scalar
 }
 
+#if !(arch(x86_64) || arch(arm64))
+func atan2(y: CGFloat, x: CGFloat) -> CGFloat {
+	return CGFloat(atan2f(Float(y), Float(x)))
+}
+func sqrt(a: CGFloat) -> CGFloat {
+	return CGFloat(sqrtf(Float(a)))
+}
+#endif
+
 extension CGPoint {
 	func length() -> CGFloat {
 		return sqrt(x*x + y*y)
@@ -85,7 +94,7 @@ import AVFoundation
 var backgroundMusicPlayer: AVAudioPlayer!
 func playBackgroundMusic(filename: String) {
 	let resourceUrl = Bundle.main.url(forResource:
-		filename, withExtension: nil)
+										filename, withExtension: nil)
 	guard let url = resourceUrl else {
 		print("Could not find file: \(filename)")
 		return
